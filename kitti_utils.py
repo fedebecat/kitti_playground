@@ -4,6 +4,22 @@ import ntpath
 from glob import glob
 import cv2
 import pickle
+import gzip
+
+
+def load(filename):
+    """Loads a compressed object from disk
+    """
+    file = gzip.GzipFile(filename, 'rb')
+    buffer = ""
+    while True:
+        data = file.read()
+        if data == "":
+            break
+        buffer += data
+    object = pickle.loads(buffer)
+    file.close()
+    return object
 
 
 class KittiAnnotation:
@@ -51,8 +67,7 @@ class KittiAnnotation:
             for f in range(self.num_frames):
                 p = self.img_paths[f].replace('image_02', 'masks_and_dets') + '.pkl'
 
-                with open(p, "rb") as input_file:
-                    mask_and_dets = pickle.load(input_file)
+                mask_and_dets = load(p)
                 data_to_yield = {}
                 if 'img' in data:
                     cur_img = cv2.imread(self.img_paths[f])

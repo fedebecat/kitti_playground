@@ -40,14 +40,14 @@ annot = KittiAnnotation(file_path, img_path)
 '''
 "gen" is a generator to obtain relevant data about each frame in the sequence 
 use loop=True to loop indefinitely over the video
-you can pass to data the types you want the generator to yield
+you can pass to data_from_generator the types you want the generator to yield
 available types:
 'img' -> the BGR frame
 'annot' -> the ground truth data
 'dets' -> Mask-RCNN detections
 'masks' -> segmentation masks from Mask-RCNN
 '''
-data_from_generator = ('img', 'annot', 'masks')
+data_from_generator = ('img', 'annot', 'dets')
 gen = annot.annot_generator(data=data_from_generator, loop=True)
 
 FPS = 30
