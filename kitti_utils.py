@@ -3,13 +3,15 @@ import numpy as np
 import ntpath
 from glob import glob
 import cv2
+import pickle
 
 
 class KittiAnnotation:
-    '''
+    """
     Read the kitti annotation file
     frame_ids, track_ids, obj_type, truncation, occlusion, obs_angle, x1, y1, x2, y2, w, h, l, X, Y, Z, yaw
-    '''
+    """
+
     def __init__(self, filepath, imgpath):
         # read frames
         self.img_paths = sorted(glob(imgpath + '/*.png'))
@@ -37,26 +39,37 @@ class KittiAnnotation:
     def __str__(self):
         return 'track ' + self.annot_name
 
-    def annot_generator(self, data=('img', 'annot'), loop=False):
-        '''
+    def annot_generator(self, data=('img'), loop=False):
+        """
         :param data: list of data types to return ('img', 'annot')
         :param loop: set to True to loop over the video indefinitely
         :return: generator over video frames
-        '''
+        """
 
         is_looping = True
         while is_looping:
             for f in range(self.num_frames):
-                data_to_yield = []
+                p = self.img_paths[f].replace('image_02', 'masks_and_dets') + '.pkl'
+
+                with open(p, "rb") as input_file:
+                    mask_and_dets = pickle.load(input_file)
+                data_to_yield = {}
                 if 'img' in data:
                     cur_img = cv2.imread(self.img_paths[f])
-                    data_to_yield.append(cur_img)
+                    data_to_yield['img'] = cur_img
                 if 'annot' in data:
-                    data_to_yield.append(self.boxes_per_frame[f])
+                    data_to_yield['annot'] = self.boxes_per_frame[f]
+                if 'dets' in data:
+                    data_to_yield['dets'] = ([x['bbox'] for x in mask_and_dets],
+                                             [x['class_name'] for x in mask_and_dets],
+                                             [x['score'] for x in mask_and_dets])
+                if 'masks' in data:
+                    data_to_yield['masks'] = [x['mask'] for x in mask_and_dets]
+
                 yield data_to_yield
             if not loop:
                 is_looping = False
             else:
                 print 'Starting again from the beginning...'
         # we have reached the end of the video
-        yield None, None
+        yield [None] * len(data)
