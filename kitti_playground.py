@@ -4,6 +4,7 @@ from random import shuffle
 from kitti_utils import KittiAnnotation
 import numpy as np
 
+
 def get_colormap(N):
     cm = plt.cm.get_cmap(None, N)
     colors = [cm(x) for x in range(N)]
@@ -30,8 +31,8 @@ def vis_mask(img, mask, col, alpha=0.4, show_border=True, border_thick=1):
 
     return img.astype(np.uint8)
 
-dataset_path = '/media/becattini/RedPro/dataset/kitti/'
 
+dataset_path = '/media/becattini/RedPro/dataset/kitti/'
 video_id = '0000'
 file_path = dataset_path + '/label_02/' + video_id + '.txt'
 img_path = dataset_path + 'image_02/' + video_id
