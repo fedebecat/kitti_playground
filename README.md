@@ -14,6 +14,14 @@ If you want Mask-RCNN detections and masks you can download the compressed pickl
  - pickle
  - gzip
 
+## Setting up `virtualenv`
+```
+virtualenv --system-site-packages kitti-env
+source kitti-env/bin/activate
+pip install -r requirements.txt
+```
+Add flag `--system-site-packages` to use `TKinter` for `matplotlib.plot`
+
 ## Run the code
 Run _kitti_playground.py_ to see an example code
 
