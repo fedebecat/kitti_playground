@@ -25,6 +25,20 @@ Add flag `--system-site-packages` to use `TKinter` for `matplotlib.plot`
 ## Run the code
 Run _kitti_playground.py_ to see an example code
 
+## Usage
+```
+usage: kitti_playground.py [-h] labels_path images_path video_id
+
+positional arguments:
+  labels_path  Directory containing the labels, e.g. label_02/
+  images_path  Directory containing the images, e.g. image_02/
+  video_id     Video ID, e.g. 0000
+
+optional arguments:
+  -h, --help   show this help message and exit
+
+```
+
 ### Select video
 Change _video_id_ to match the names of the videos (0000, 0001, 0002, ...)
 
