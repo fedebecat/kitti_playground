@@ -48,7 +48,12 @@ available types:
 'dets' -> Mask-RCNN detections
 'masks' -> segmentation masks from Mask-RCNN
 '''
-data_from_generator = ('img', 'annot', 'dets')
+data_from_generator = (
+    'img',
+    'annot',
+    'dets',
+    # 'masks',
+    )
 gen = annot.annot_generator(data=data_from_generator, loop=True)
 
 FPS = 30
