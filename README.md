@@ -2,7 +2,7 @@
 A playground to test sequences from the kitti dataset http://www.cvlibs.net/datasets/kitti/
 
 ## Requirements
-Download the tracking training sequences and labels from the [**kitti website**](http://www.cvlibs.net/datasets/kitti/eval_tracking.php) or download a sample sequence from my [_google drive link_](https://drive.google.com/drive/folders/1YJxWvlZZ6vp9GQ5yT-dDtDFaxrDLcfTW?usp=sharing).
+Download the tracking training sequences and labels from the [**kitti website**](http://www.cvlibs.net/datasets/kitti/eval_tracking.php) or download a sample sequence from my [_google drive link_](https://drive.google.com/drive/folders/1YJxWvlZZ6vp9GQ5yT-dDtDFaxrDLcfTW?usp=sharing). Note that Google Drive sometimes exhibits file preview issues, so do not download frames individually. Download the whole directory instead.
 If you want Mask-RCNN detections and masks you can download the compressed pickle results [_here_](https://drive.google.com/drive/folders/1YJxWvlZZ6vp9GQ5yT-dDtDFaxrDLcfTW?usp=sharing)
 
 ## Libraries
@@ -49,3 +49,4 @@ Available types:
  - 'annot' -> the ground truth data
  - 'dets' -> Mask-RCNN detections
  - 'masks' -> segmentation masks from Mask-RCNN
+ - 'feats' -> Mask-RCNN fc7 features for each detection box
