@@ -80,6 +80,8 @@ class KittiAnnotation:
                                              [x['score'] for x in mask_and_dets])
                 if 'masks' in data:
                     data_to_yield['masks'] = [x['mask'] for x in mask_and_dets]
+                if 'feats' in data:
+                    data_to_yield['feats'] = [x['feats'] for x in mask_and_dets]
 
                 yield data_to_yield
             if not loop:
