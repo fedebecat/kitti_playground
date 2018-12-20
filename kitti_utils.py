@@ -46,6 +46,7 @@ class KittiAnnotation:
         self.annot_name = ntpath.basename(filepath)
         self.boxes_per_frame = [{} for x in range(self.num_frames)]
         for n, a in enumerate(self.annotations):
+            print(n,a)
             if int(a[1]) >= 0:
                 self.boxes_per_frame[int(a[0])][a[1]] = ([int(a[6].split('.')[0]),
                                                           int(a[7].split('.')[0]),
@@ -55,7 +56,7 @@ class KittiAnnotation:
     def __str__(self):
         return 'track ' + self.annot_name
 
-    def annot_generator(self, data=('img'), loop=False):
+    def annot_generator(self, data=('img'), loop=False, dets_threshold=0):
         """
         :param data: list of data types to return ('img', 'annot')
         :param loop: set to True to loop over the video indefinitely
@@ -75,9 +76,11 @@ class KittiAnnotation:
                 if 'annot' in data:
                     data_to_yield['annot'] = self.boxes_per_frame[f]
                 if 'dets' in data:
-                    data_to_yield['dets'] = ([x['bbox'] for x in mask_and_dets],
-                                             [x['class_name'] for x in mask_and_dets],
-                                             [x['score'] for x in mask_and_dets])
+                    data_to_yield['dets'] = [(x['bbox'],
+                                              x['class_name'],
+                                              x['score']) for x in mask_and_dets if x['score'] > dets_threshold]
+                                             # [x['class_name'] for x in mask_and_dets],
+                                             # [x['score'] for x in mask_and_dets])
                 if 'masks' in data:
                     data_to_yield['masks'] = [x['mask'] for x in mask_and_dets]
 
