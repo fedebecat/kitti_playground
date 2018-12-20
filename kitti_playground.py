@@ -35,7 +35,7 @@ def get_parser():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('labels_path', metavar='labels_path', type=str, help ="""Directory containing the labels, e.g. label_02/""")
     parser.add_argument('images_path', metavar='images_path', type=str, help ="""Directory containing the images, e.g. image_02/""")
-    parser.add_argument('video_id', metavar='video_id', type=str, help ="""Video ID, e.g. 0000""")
+    parser.add_argument('video_id', metavar='video_id', type=str, help ="""Video ID, e.g. 0000""", default='0000')
     return parser
 
 def main(args):
@@ -53,8 +53,15 @@ def main(args):
     'annot' -> the ground truth data
     'dets' -> Mask-RCNN detections
     'masks' -> segmentation masks from Mask-RCNN
+    'feats' -> Mask-RCNN features for each detection
     '''
-    data_from_generator = ('img', 'annot', 'dets')
+    data_from_generator = (
+        'img',
+        'annot',
+        'dets',
+        'feats',
+        # 'masks',
+        )
     gen = annot.annot_generator(data=data_from_generator, loop=True)
 
     FPS = 30
@@ -86,6 +93,10 @@ def main(args):
             masks = cur_data['masks']
             for mask in masks:
                 img = vis_mask(img, mask, (0, 0, 255))
+
+        # Mask-RCNN features for each detection box
+        if 'feats' in cur_data.keys():
+            cur_feats = cur_data['feats']
 
         cv2.imshow('img', img)
         cv2.waitKey(1000/FPS)
